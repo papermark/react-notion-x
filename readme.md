@@ -10,20 +10,22 @@
 
 ## Contents
 
-- [Advice](#advice)
-- [Features](#features)
-- [Usage](#usage)
-- [Styles](#styles)
-- [Optional Components](#optional-components)
-- [Private Pages](#private-pages)
-- [Next.js Examples](#nextjs-examples)
-- [Packages](#packages)
-- [Supported Blocks](#supported-blocks)
-- [Performance](#performance)
-- [Related](#related)
-- [Contributing](#contributing)
-- [License](#license)
-- [Sponsor](#sponsor)
+- [React Notion X](#react-notion-x)
+  - [Contents](#contents)
+  - [Advice](#advice)
+  - [Features](#features)
+  - [Usage](#usage)
+  - [Styles](#styles)
+  - [Optional Components](#optional-components)
+  - [Private Pages](#private-pages)
+  - [Next.js Examples](#nextjs-examples)
+  - [Packages](#packages)
+  - [Supported Blocks](#supported-blocks)
+  - [Performance](#performance)
+  - [Related](#related)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Sponsor](#sponsor)
 
 ## Advice
 
@@ -147,7 +149,7 @@ export default ({ recordMap }) => (
 )
 ```
 
-The `Code` component uses [Prism]() under the hood. It comes bundled with support for JavaScript, TypeScript, and CSS by default. To add support for additional language syntaxes, follow the example in [`components/NotionPage.tsx`](./examples/full/components/NotionPage.tsx) which lazily loads Prism components at runtime.
+The `Code` component uses [Prism](https://prismjs.com) under the hood. It comes bundled with support for JavaScript, TypeScript, and CSS by default. To add support for additional language syntaxes, follow the example in [`components/NotionPage.tsx`](./examples/full/components/NotionPage.tsx) which lazily loads Prism components at runtime. You will likely want to add `prismjs` to your project as a dependency when using the `Code` component so TypeScript doesn't complain.
 
 For `Equation` support, you'll need to import the katex CSS styles.
 
@@ -265,23 +267,23 @@ All known blocks and most known configuration settings can be found in our [test
 
 Out of the box, `react-notion-x` is pretty fast and relatively lightweight, but there are a few key factors to be aware of.
 
-Bundlephobia reports a [~27kb gzip bundle size](https://bundlephobia.com/result?p=react-notion-x) for the main `react-notion-x` bundle. This doesn't include the optional `third-party` components which we recommend lazy loading via [next/dynamic](https://nextjs.org/docs/advanced-features/dynamic-import) only if a page needs them.
+Bundlephobia reports a [~28kb gzip bundle size](https://bundlephobia.com/result?p=react-notion-x) for the main `react-notion-x` bundle. This doesn't include the optional `third-party` components which we recommend lazy loading via [next/dynamic](https://nextjs.org/docs/advanced-features/dynamic-import) only if a page needs them.
 
 Another major factor for perf comes from images hosted by Notion. They're generally unoptimized, improperly sized, and not cacheable because Notion has to deal with fine-grained access control that users can change at any time. You can override the default `mapImageUrl` function on `NotionRenderer` to add caching via a CDN like Cloudflare Workers, which is what Notion X does for optimal page load speeds.
 
 `NotionRenderer` also supports lazy image loading with optional low quality image placeholder previews. You can see a demo of this in practice [on this page](https://react-notion-x-demo.transitivebullsh.it/3492bd6dbaf44fe7a5cac62c5d402f06) which is using [lqip-modern](https://github.com/transitive-bullshit/lqip-modern) to pre-generate placeholder images that are inspired by Medium.com's image loading.
 
-If you're using Next.js, we recommend passing `next/image` and `next/link` to the renderer as follows:
+If you're using Next.js, we recommend passing `next/image` or `next/legacy/image`, and `next/link` to the renderer as follows:
 
 ```tsx
-import Image from 'next/image'
+import Image from 'next/image' // or import Image from 'next/legacy/image' if you use legacy Image
 import Link from 'next/link'
 
 export default ({ recordMap }) => (
   <NotionRenderer
     recordMap={recordMap}
     components={{
-      nextImage: Image,
+      nextImage: Image, // or nextLegacyImage: LegacyImage,
       nextLink: Link
     }}
   />
@@ -289,6 +291,8 @@ export default ({ recordMap }) => (
 ```
 
 This wraps these next.js components in a compatability layer so `NotionRenderer` can use them the same as their non-next.js equivalents `<img>` and `<a>`.
+
+Note that custom image component is currently only enabled with preview image or by turning on `forceCustomImages` of `NotionRenderer`.
 
 ## Related
 
@@ -300,11 +304,10 @@ This wraps these next.js components in a compatability layer so `NotionRenderer`
   - `react-notion-x` started as a fork of `react-notion` with better support for different types of Notion content (especially collections) and grew into something much more comprehensive
   - `react-notion` is no longer actively maintained
 - [notion-api-worker](https://github.com/splitbee/notion-api-worker) - Notion API proxy exposed as a Cloudflare Worker
-  - `notion-types` and `notion-client` are a refactored fork of `notion-api-worker`.
+  - `notion-types` and `notion-client` are a rewrite of `notion-api-worker`
   - One of the main use cases for `react-notion-x` is server-side rendering via Next.js, in which case the CF worker is unnecessary
   - We recommend that you use [notion-client](./packages/notion-client) instead
-- [notion-api-agent](https://github.com/dragonman225/notionapi-agent) - Alternative Notion API client
-- [notion-py](https://github.com/jamalex/notion-py) - Excellent Python wrapper around the Notion API
+- [notion-py](https://github.com/jamalex/notion-py) - Python wrapper around the Notion API
 
 ## Contributing
 
@@ -315,8 +318,6 @@ See the [contribution guide](contributing.md) and join our amazing list of [cont
 MIT © [Travis Fischer](https://transitivebullsh.it)
 
 This project extends MIT-licensed work by [Timo Lins](https://twitter.com/timolins), [Tobias Lins](https://twitter.com/linstobias), [Sam Wight](https://samw.dev), and other contributors.
-
-Big thanks to [Noah Bragg](https://github.com/normdoow) who runs [Potion.so](https://www.potion.so/) for helping to maintain `react-notion-x`.
 
 Support my OSS work by <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a>
 

@@ -1,19 +1,30 @@
-import * as React from 'react'
-
-import { FileBlock } from 'notion-types'
+import type * as React from 'react'
+import { type FileBlock } from 'notion-types'
 
 import { useNotionContext } from '../context'
 import { FileIcon } from '../icons/file-icon'
 import { cs } from '../utils'
 import { Text } from './text'
 
-export const File: React.FC<{
+export function File({
+  block,
+  className
+}: {
   block: FileBlock
   className?: string
-}> = ({ block, className }) => {
+}) {
   const { components, recordMap } = useNotionContext()
-  const source =
+
+  let source =
     recordMap.signed_urls[block.id] || block.properties?.source?.[0]?.[0]
+
+  if (!source) {
+    return null
+  }
+
+  if (block.space_id) {
+    source = source.concat('&spaceId=', block.space_id)
+  }
 
   return (
     <div className={cs('notion-file', className)}>

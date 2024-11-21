@@ -1,4 +1,4 @@
-import { Color, Decoration, ID, Role } from './core'
+import { type Color, type Decoration, type ID, type Role } from './core'
 
 export type BlockType =
   | 'page'
@@ -153,6 +153,7 @@ export interface BasePageBlock extends BaseBlock {
     page_full_width?: boolean
     page_small_text?: boolean
     page_cover_position?: number
+    card_cover_position?: number
     block_locked?: boolean
     block_locked_by?: string
     page_cover?: string
@@ -445,6 +446,7 @@ export interface TableBlock extends BaseBlock {
       [column: string]: { width?: number; color?: Color }
     }
     table_block_column_header: boolean
+    table_block_row_header: boolean
     table_block_column_order: string[]
   }
   view_ids: ID[]
