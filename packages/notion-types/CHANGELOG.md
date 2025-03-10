@@ -1,5 +1,17 @@
 # notion-types
 
+## 7.1.6
+
+### Patch Changes
+
+- Fix signed urls
+
+## 7.1.5
+
+### Patch Changes
+
+- Fix images
+
 ## 7.1.4
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # notion-x-example-minimal
 
+## 7.1.6
+
+### Patch Changes
+
+- Fix signed urls
+- Updated dependencies
+  - notion-client@7.1.6
+  - notion-types@7.1.6
+  - notion-utils@7.1.6
+  - react-notion-x@7.2.6
+
+## 7.1.5
+
+### Patch Changes
+
+- Fix images
+- Updated dependencies
+  - notion-client@7.1.5
+  - notion-types@7.1.5
+  - notion-utils@7.1.5
+  - react-notion-x@7.2.5
+
 ## 7.1.4
 
 ### Patch Changes
